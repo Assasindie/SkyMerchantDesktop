@@ -7,6 +7,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
+using System.Windows.Threading;
 using SkyMerchantDesktop.Models;
 using SkyMerchantDesktop.Models.Recipe;
 using SkyMerchantDesktop.Services;
@@ -16,8 +17,8 @@ namespace SkyMerchantDesktop.ViewModels
 {
     public class BazaarPageViewModel : BaseViewModel
     {
-        private ListCollectionView _recipeCostView;
-        public ListCollectionView RecipeCostView
+        private CollectionViewSource _recipeCostView;
+        public CollectionViewSource RecipeCostView
         {
             get { return _recipeCostView; }
             set { _recipeCostView = value; OnPropertyChanged();}
@@ -43,14 +44,20 @@ namespace SkyMerchantDesktop.ViewModels
         private async Task Initialise()  
         {
             _recipes = await App.RecipeApiService.GetLatestRecipes();
-            await LoadLatestData();
-            RecipeCostView = new ListCollectionView(RecipeCosts);
-            RecipeCostView.IsLiveSorting = true;
-            RecipeCostView.SortDescriptions.Add(new SortDescription("lowestAuction", ListSortDirection.Descending));
-            RecipeCostView.SortDescriptions.Add(new SortDescription("name", ListSortDirection.Descending));
+            //need to be created on the same thread. When updating doesnt matter about thread.
+            await App.Current.Dispatcher.BeginInvoke(async () =>
+           {
+               await LoadLatestData();
+               RecipeCostView = new CollectionViewSource()
+               {
+                   Source = RecipeCosts
+               };
 
+               RecipeCostView.IsLiveSortingRequested = true;
+               RecipeCostView.SortDescriptions.Add(new SortDescription("difference", ListSortDirection.Descending));
+           });
             //start timer that will regularly fetch new data
-            timer = new System.Timers.Timer(1000);
+            timer = new System.Timers.Timer(120000);
             timer.Elapsed += Timer_Elapsed;
             timer.Start();
          }
@@ -58,7 +65,6 @@ namespace SkyMerchantDesktop.ViewModels
         public BazaarPageViewModel()
         {
             Task.Run(() => Initialise());
-            //this.SortByDifferenceCommand = new RelayCommand((x) => SortByDifference());
         }
        
         private async Task LoadLatestData()
@@ -69,19 +75,9 @@ namespace SkyMerchantDesktop.ViewModels
             RecipeCosts = new EnhancedObservableCollection<RecipeItem>(new RecipeService().GetRecipeListWithCosts(_recipes, _auctions, _bazaars));
         }
 
-        private void SortByDifference()
-        {
-            RecipeCosts[new Random().Next(1, 4)].difference = new Random().Next(-1000000, 1000000);
-                       
-           // RecipeCosts = new EnhancedObservableCollection<RecipeItem>(x);
-
-        }
-
-
         private async void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
-            //await LoadLatestData();
-            SortByDifference();
+            await LoadLatestData();
         }
 
     }

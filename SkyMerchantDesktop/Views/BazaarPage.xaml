@@ -7,19 +7,8 @@
         mc:Ignorable="d"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <Grid.Resources>
-            <CollectionViewSource 
-                x:Key="source"
-                IsLiveSortingRequested="True"
-                Source="{Binding RecipeCosts}"
-                >
-                <CollectionViewSource.SortDescriptions>
-                    <componentModel:SortDescription PropertyName="difference" />
-                </CollectionViewSource.SortDescriptions>
-            </CollectionViewSource>
-        </Grid.Resources>
         <ListView
-            ItemsSource = "{Binding Source={StaticResource source}}">
+            ItemsSource = "{Binding RecipeCostView.View}">
             <ListView.View>
                 <GridView AllowsColumnReorder="true">
                     <GridViewColumn DisplayMemberBinding = "{Binding Path=name}" Header = "Recipe Name"/>
