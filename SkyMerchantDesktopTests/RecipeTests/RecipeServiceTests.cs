@@ -111,14 +111,21 @@ namespace SkyMerchantDesktopTests.RecipeTests
             Assert.True(items.Count != _recipes.Count);
         }
 
+        //soul whip test just using bazaar cost,
+        //reaper scythe uses auction + consuming of an enitre auction stock over multiple slots+ needing more
+        //REAPER_SCYTHE 2 test uses 1.5 auctions worth of stock in 1 slot
         [Test]
-        [TestCase(1,572.5,12000000)]
-        public void GetRecipeListWithCosts(int expectedCount, decimal expectedBazaarCost, decimal expectedAuctionCost)
+        [TestCase("SOUL_WHIP",572.5,12000000)]
+        [TestCase("REAPER_SCYTHE",1800640,5000000)]
+        [TestCase("REAPER_SCYTHE_2",1800640,5000000)]
+
+        public void GetRecipeListWithCosts(string name, decimal expectedBazaarCost, decimal expectedAuctionCost)
         {
             List<RecipeItem> items = _recipeService.GetRecipeListWithCosts(_recipes, _auctions, _bazaar);
-            Assert.AreEqual(1, items.Count);
-            Assert.AreEqual(expectedBazaarCost, items.First().bazaarCost);
-            Assert.AreEqual(expectedAuctionCost, items.First().lowestAuction);
+            RecipeItem item = items.FirstOrDefault(o => o.name == name, null);
+            Assert.IsNotNull(item);
+            Assert.AreEqual(expectedBazaarCost, item.bazaarCost);
+            Assert.AreEqual(expectedAuctionCost, item.lowestAuction);
         }
     }
 }

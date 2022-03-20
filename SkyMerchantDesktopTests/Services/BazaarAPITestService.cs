@@ -115,7 +115,29 @@ namespace SkyMerchantDesktopTests.Services
                             orders = 1
                         }
                     }
-                }
+                },
+                new Bazaar()
+                {
+                    product_id = "Revenant_Viscera",
+                    buy_summary = new BazaarCostSummary[]
+                    {
+                        new BazaarCostSummary()
+                        {
+                            amount = 1234,
+                            pricePerUnit = new decimal(10),
+                            orders = 1
+                        }
+                    },
+                    sell_summary = new BazaarCostSummary[]
+                    {
+                        new BazaarCostSummary()
+                        {
+                            amount = 1234,
+                            pricePerUnit = new decimal(10),
+                            orders = 1
+                        }
+                    }
+                },
             };
         }
     }

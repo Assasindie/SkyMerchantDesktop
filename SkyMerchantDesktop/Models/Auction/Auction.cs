@@ -10,8 +10,9 @@ namespace SkyMerchantDesktop.Models
         public string itemName { get; set; }
         
         [JsonProperty("bid")]
-        public long bid { get; set; }
+        public decimal bid { get; set; }
         public bool bin { get; set; }
+        public int count { get; set; }
 
         public int CompareTo(Auction? obj)
         {
@@ -25,5 +26,6 @@ namespace SkyMerchantDesktop.Models
             }
             return 0;
         }
+        
     }
 }

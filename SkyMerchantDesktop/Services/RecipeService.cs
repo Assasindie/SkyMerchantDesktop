@@ -1,6 +1,7 @@
 ﻿using SkyMerchantDesktop.Models.Interfaces;
 using System;
 using System.Collections.Generic;
+using System.Formats.Asn1;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -17,18 +18,20 @@ namespace SkyMerchantDesktop.Services
         public decimal GetCostForRecipe(Recipe? recipe, List<Bazaar> bazzar, List<Auction> auctions)
         {
             if (recipe == null) throw new Exception();
+            List<Auction> filteredAuctions = AuctionUtils.FindAuctionByRecipeNamesAndDeepClone(recipe.A1,
+                recipe.A2, recipe.A3, recipe.B1, recipe.B2, recipe.B3, recipe.C1, recipe.C2, recipe.C3,auctions);
             decimal totalCost = 0;
             try
             {
-                totalCost += CheckNotNUllAndGetCost(recipe.A1, bazzar, auctions);
-                totalCost += CheckNotNUllAndGetCost(recipe.A2, bazzar, auctions);
-                totalCost += CheckNotNUllAndGetCost(recipe.A3, bazzar, auctions);
-                totalCost += CheckNotNUllAndGetCost(recipe.B1, bazzar, auctions);
-                totalCost += CheckNotNUllAndGetCost(recipe.B2, bazzar, auctions);
-                totalCost += CheckNotNUllAndGetCost(recipe.B3, bazzar, auctions);
-                totalCost += CheckNotNUllAndGetCost(recipe.C1, bazzar, auctions);
-                totalCost += CheckNotNUllAndGetCost(recipe.C2, bazzar, auctions);
-                totalCost += CheckNotNUllAndGetCost(recipe.C3, bazzar, auctions);
+                totalCost += CheckNotNUllAndGetCost(recipe.A1, bazzar, filteredAuctions);
+                totalCost += CheckNotNUllAndGetCost(recipe.A2, bazzar, filteredAuctions);
+                totalCost += CheckNotNUllAndGetCost(recipe.A3, bazzar, filteredAuctions);
+                totalCost += CheckNotNUllAndGetCost(recipe.B1, bazzar, filteredAuctions);
+                totalCost += CheckNotNUllAndGetCost(recipe.B2, bazzar, filteredAuctions);
+                totalCost += CheckNotNUllAndGetCost(recipe.B3, bazzar, filteredAuctions);
+                totalCost += CheckNotNUllAndGetCost(recipe.C1, bazzar, filteredAuctions);
+                totalCost += CheckNotNUllAndGetCost(recipe.C2, bazzar, filteredAuctions);
+                totalCost += CheckNotNUllAndGetCost(recipe.C3, bazzar, filteredAuctions);
                 return totalCost;
             }catch (RecipeNotEnoughItemsException e)
             {
@@ -55,10 +58,24 @@ namespace SkyMerchantDesktop.Services
                 //if item cant be found on the bazaar it might be an upgrade recipe so search the AH for the cheapest version.
                 List<Auction> filteredAuctions = AuctionUtils.FindByAuctionName(name, auctions);
                 if (filteredAuctions.Count == 0) throw new RecipeItemNotFoundException();
-                if(filteredAuctions.Count < count) throw new RecipeNotEnoughItemsException();
-                for (int i = 0; i < count; i++)
+                if(filteredAuctions.Sum(o => o.count) < count) throw new RecipeNotEnoughItemsException();
+                foreach (Auction auction in filteredAuctions)
                 {
-                    cost += filteredAuctions[i].bid;
+                    if (count <= 0) break;
+                    //total number to be subtracted shouldnt be higher than count.
+                    bool higherCount = auction.count > count;
+                    cost += higherCount ? (auction.bid/auction.count) * count : auction.bid;
+                    //if all the items in the auction have been consumed remove from the temporary auction list
+                    if (!higherCount)
+                    {
+                        auctions.Remove(auction);
+                    }
+                    else //remove the count from the auction total count and the cost
+                    {
+                        auction.count -= count;
+                        auction.bid -= cost;
+                    }
+                    count -= higherCount ? count : auction.count;
                 }
                 return cost;
             }

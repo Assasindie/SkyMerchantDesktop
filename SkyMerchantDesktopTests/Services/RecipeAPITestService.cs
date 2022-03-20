@@ -65,6 +65,28 @@ namespace SkyMerchantDesktopTests.Services
                 new RecipeItem()
                 {
                     name = "NoRecipe"
+                },
+                new RecipeItem()
+                {
+                    name = "REAPER_SCYTHE",
+                    recipe = new Recipe()
+                    {
+                        A1 = "SCYTHE_BLADE:1",
+                        A2 = "Revenant_Viscera:64",
+                        A3 = "Reaper_Falchion:1",
+                        B3 = "Reaper_Falchion:1",
+                        C3 = "Reaper_Falchion:1"
+                    }
+                },
+                new RecipeItem()
+                {
+                    name = "REAPER_SCYTHE_2",
+                    recipe = new Recipe()
+                    {
+                        A1 = "SCYTHE_BLADE:1",
+                        A2 = "Revenant_Viscera:64",
+                        A3 = "Reaper_Falchion:3",
+                    }
                 }
             };
         }

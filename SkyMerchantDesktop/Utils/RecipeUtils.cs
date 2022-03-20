@@ -16,5 +16,17 @@ namespace SkyMerchantDesktop.Utils
             int total = int.Parse(regex.Replace(":",""));
             return new Tuple<string, int>(name, total);
         }
+        
+        public static string GetNameFromRecipe(string? item)
+        {
+            if (string.IsNullOrWhiteSpace(item))
+            {
+                return string.Empty;
+            }
+            //match the number part
+            string regex = Regex.Match(item, ":[0-9]*").Value;
+            //remove number part from name
+            return item.Replace(regex, "");
+        }
     }
 }
