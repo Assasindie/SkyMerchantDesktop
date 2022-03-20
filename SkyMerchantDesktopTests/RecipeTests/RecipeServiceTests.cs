@@ -22,7 +22,7 @@ namespace SkyMerchantDesktopTests.RecipeTests
         protected List<RecipeItem> _recipes;
         protected IRecipeAPIService _recipeApiService;
         protected List<Auction> _auctions;
-        protected IAuctionService _auctionService;
+        protected IAuctionAPIService AuctionApiService;
 
         [OneTimeSetUp]
         protected override void OneTimeSetup()
@@ -31,7 +31,7 @@ namespace SkyMerchantDesktopTests.RecipeTests
             _recipeService = new RecipeService();
             _bazaarAPIService = new BazaarAPITestService();
             _recipeApiService = new RecipeAPITestService();
-            _auctionService = new AuctionAPITestService();
+            AuctionApiService = new AuctionApiTestService();
         }
             
         [SetUp]
@@ -39,7 +39,7 @@ namespace SkyMerchantDesktopTests.RecipeTests
         {
             _bazaar = await _bazaarAPIService.GetAllBazaarItems();
             _recipes = await _recipeApiService.GetLatestRecipes();
-            _auctions = await _auctionService.GetAllBINAuctions();
+            _auctions = await AuctionApiService.GetAllBINAuctions();
         }
 
         [Test]
@@ -115,17 +115,19 @@ namespace SkyMerchantDesktopTests.RecipeTests
         //reaper scythe uses auction + consuming of an enitre auction stock over multiple slots+ needing more
         //REAPER_SCYTHE 2 test uses 1.5 auctions worth of stock in 1 slot
         [Test]
-        [TestCase("SOUL_WHIP",572.5,12000000)]
-        [TestCase("REAPER_SCYTHE",1800640,5000000)]
-        [TestCase("REAPER_SCYTHE_2",1800640,5000000)]
+        [TestCase("SOUL_WHIP",572.5,12000000, 11999427.5)]
+        [TestCase("REAPER_SCYTHE",1800640,5000000,3199360)]
+        [TestCase("REAPER_SCYTHE_2",1800640,5000000, 3199360)]
+        [TestCase("NEGATIVE_PROFIT", 1800640, 1000000, -800640)]
 
-        public void GetRecipeListWithCosts(string name, decimal expectedBazaarCost, decimal expectedAuctionCost)
+        public void GetRecipeListWithCosts(string name, decimal expectedBazaarCost, decimal expectedAuctionCost, decimal difference)
         {
             List<RecipeItem> items = _recipeService.GetRecipeListWithCosts(_recipes, _auctions, _bazaar);
             RecipeItem item = items.FirstOrDefault(o => o.name == name, null);
             Assert.IsNotNull(item);
             Assert.AreEqual(expectedBazaarCost, item.bazaarCost);
             Assert.AreEqual(expectedAuctionCost, item.lowestAuction);
+            Assert.AreEqual(difference, item.difference);
         }
     }
 }

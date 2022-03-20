@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace SkyMerchantDesktopTests.Services
 {
-    internal class BazaarAPITestService : IBazaarAPIService
+    public class BazaarAPITestService : IBazaarAPIService
     {
         public async Task<List<Bazaar>> GetAllBazaarItems()
         {

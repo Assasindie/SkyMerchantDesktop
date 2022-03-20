@@ -17,7 +17,7 @@ namespace SkyMerchantDesktop.Services
     {
         public decimal GetCostForRecipe(Recipe? recipe, List<Bazaar> bazzar, List<Auction> auctions)
         {
-            if (recipe == null) throw new Exception();
+            if (recipe == null) return -1;
             List<Auction> filteredAuctions = AuctionUtils.FindAuctionByRecipeNamesAndDeepClone(recipe.A1,
                 recipe.A2, recipe.A3, recipe.B1, recipe.B2, recipe.B3, recipe.C1, recipe.C2, recipe.C3,auctions);
             decimal totalCost = 0;
@@ -120,6 +120,7 @@ namespace SkyMerchantDesktop.Services
                 if (cost == -1) continue;
                 
                 item.bazaarCost = cost;
+                item.difference = lowestAuction - cost;
                     
                 filtered.Add(item);
             }

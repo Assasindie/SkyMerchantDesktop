@@ -87,6 +87,18 @@ namespace SkyMerchantDesktopTests.Services
                         A2 = "Revenant_Viscera:64",
                         A3 = "Reaper_Falchion:3",
                     }
+                },
+                                new RecipeItem()
+                {
+                    name = "NEGATIVE_PROFIT",
+                    recipe = new Recipe()
+                    {
+                        A1 = "SCYTHE_BLADE:1",
+                        A2 = "Revenant_Viscera:64",
+                        A3 = "Reaper_Falchion:1",
+                        B3 = "Reaper_Falchion:1",
+                        C3 = "Reaper_Falchion:1"
+                    }
                 }
             };
         }

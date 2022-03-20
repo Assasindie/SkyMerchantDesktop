@@ -18,4 +18,8 @@
     <ProjectReference Include="..\SkyMerchantDesktop\SkyMerchantDesktop.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Services" />
+  </ItemGroup>
+
 </Project>

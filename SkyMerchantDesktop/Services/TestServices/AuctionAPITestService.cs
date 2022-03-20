@@ -6,7 +6,7 @@ using SkyMerchantDesktop.Models.Interfaces;
 
 namespace SkyMerchantDesktopTests.Services
 {
-    public class AuctionAPITestService : IAuctionService
+    public class AuctionApiTestService : IAuctionAPIService
     {
         public async Task<List<Auction>> GetAllBINAuctions()
         {
@@ -70,11 +70,17 @@ namespace SkyMerchantDesktopTests.Services
                 },
                 new Auction()
                 {
-                itemName = "Reaper Scythe 2",
-                bin = true,
-                bid = 5000000,
-                count = 1
-            }
+                    itemName = "Reaper Scythe 2",
+                    bin = true,
+                    bid = 5000000,
+                    count = 1
+                }, new Auction()
+                {
+                    itemName = "Negative Profit",
+                    bin= true,
+                    bid = 1000000,
+                    count = 1
+                }
             };
         }
     }

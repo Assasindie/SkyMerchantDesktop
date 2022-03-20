@@ -6,7 +6,7 @@ using SkyMerchantDesktop.Models.Interfaces;
 
 namespace SkyMerchantDesktop.Services
 {
-    public class AuctionAPIService : IAuctionService
+    public class AuctionApiService : IAuctionAPIService
     {
         public async Task<List<Auction>> GetAllBINAuctions()
         {

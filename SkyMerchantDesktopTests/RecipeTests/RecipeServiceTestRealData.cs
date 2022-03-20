@@ -17,14 +17,14 @@ namespace SkyMerchantDesktopTests.RecipeTests
         protected List<RecipeItem> _recipes;
         protected IRecipeAPIService _recipeApiService;
         protected List<Auction> _auctions;
-        protected IAuctionService _auctionService;
+        protected IAuctionAPIService AuctionApiService;
         
         [OneTimeSetUp]
         protected override void OneTimeSetup()
         {
             base.OneTimeSetup();
             _recipeService = new RecipeService();
-            this._auctionService = new AuctionAPIService();
+            this.AuctionApiService = new AuctionApiService();
             this._recipeApiService = new RecipeAPIService();
             this._bazaarAPIService = new BazaarAPIService();
         }
@@ -34,7 +34,7 @@ namespace SkyMerchantDesktopTests.RecipeTests
         {
             this._recipes = await _recipeApiService.GetLatestRecipes();
             _recipes = _recipeService.FilterByItemsWithRecipe(_recipes);
-            this._auctions = await _auctionService.GetAllBINAuctions();
+            this._auctions = await AuctionApiService.GetAllBINAuctions();
             this._bazaar = await _bazaarAPIService.GetAllBazaarItems();
         }
         

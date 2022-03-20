@@ -6,6 +6,8 @@ using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
 using System.Windows;
+using SkyMerchantDesktop.Models.Interfaces;
+using SkyMerchantDesktopTests.Services;
 
 namespace SkyMerchantDesktop
 {
@@ -15,10 +17,16 @@ namespace SkyMerchantDesktop
     public partial class App : Application
     {
         public static APIRequestService APIRequestService;
+        public static IAuctionAPIService AuctionApiService;
+        public static IBazaarAPIService BazaarApiService;
+        public static IRecipeAPIService RecipeApiService;
         public App()
         {
-            InitializeComponent();
             APIRequestService = new APIRequestService();
+            AuctionApiService = new AuctionApiTestService();
+            BazaarApiService = new BazaarAPITestService();
+            RecipeApiService = new RecipeAPITestService();
+            InitializeComponent();
         }
     }
 }

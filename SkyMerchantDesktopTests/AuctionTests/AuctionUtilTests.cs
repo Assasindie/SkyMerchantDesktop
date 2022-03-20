@@ -12,18 +12,18 @@ namespace SkyMerchantDesktopTests.AuctionTests
     public class AuctionUtilTests : BaseUnitTest
     {
         protected List<Auction> _auctions;
-        protected IAuctionService _auctionService;
+        protected IAuctionAPIService AuctionApiService;
 
         [OneTimeSetUp]
         public void OneTimeSetUp()
         {
-            _auctionService = new AuctionAPITestService();
+            AuctionApiService = new AuctionApiTestService();
         }
 
         [SetUp]
         public async Task SetUp()
         {
-            _auctions = await _auctionService.GetAllBINAuctions();
+            _auctions = await AuctionApiService.GetAllBINAuctions();
         }
         
         [Test]

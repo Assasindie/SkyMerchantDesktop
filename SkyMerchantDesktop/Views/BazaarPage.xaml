@@ -1,0 +1,33 @@
+﻿<Window x:Class="SkyMerchantDesktop.Views.BazaarPage"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:SkyMerchantDesktop" xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800">
+    <Grid>
+        <Grid.Resources>
+            <CollectionViewSource 
+                x:Key="source"
+                IsLiveSortingRequested="True"
+                Source="{Binding RecipeCosts}"
+                >
+                <CollectionViewSource.SortDescriptions>
+                    <componentModel:SortDescription PropertyName="difference" />
+                </CollectionViewSource.SortDescriptions>
+            </CollectionViewSource>
+        </Grid.Resources>
+        <ListView
+            ItemsSource = "{Binding Source={StaticResource source}}">
+            <ListView.View>
+                <GridView AllowsColumnReorder="true">
+                    <GridViewColumn DisplayMemberBinding = "{Binding Path=name}" Header = "Recipe Name"/>
+                    <GridViewColumn DisplayMemberBinding = "{Binding Path=bazaarCost}" Header = "Crafting Cost"/>
+                    <GridViewColumn DisplayMemberBinding = "{Binding Path=lowestAuction}" Header = "AH Cost"/>
+                    <GridViewColumn DisplayMemberBinding = "{Binding Path=difference}" Header = "Difference"/>
+                </GridView>
+            </ListView.View>
+        </ListView>
+    </Grid>
+</Window>
