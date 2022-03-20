@@ -12,9 +12,9 @@
             <ListView.View>
                 <GridView AllowsColumnReorder="true">
                     <GridViewColumn DisplayMemberBinding = "{Binding Path=name}" Header = "Recipe Name"/>
-                    <GridViewColumn DisplayMemberBinding = "{Binding Path=bazaarCost}" Header = "Crafting Cost"/>
-                    <GridViewColumn DisplayMemberBinding = "{Binding Path=lowestAuction}" Header = "AH Cost"/>
-                    <GridViewColumn DisplayMemberBinding = "{Binding Path=difference}" Header = "Difference"/>
+                    <GridViewColumn DisplayMemberBinding = "{Binding Path=bazaarCost, StringFormat={}{0:#,#.00}}" Header = "Crafting Cost"/>
+                    <GridViewColumn DisplayMemberBinding = "{Binding Path=lowestAuction, StringFormat={}{0:#,#.00}}" Header = "AH Cost"/>
+                    <GridViewColumn DisplayMemberBinding = "{Binding Path=difference, StringFormat={}{0:#,#.00}}" Header = "Difference"/>
                 </GridView>
             </ListView.View>
         </ListView>
