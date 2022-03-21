@@ -38,31 +38,31 @@
                 <RowDefinition Height="auto"/>
             </Grid.RowDefinitions>
             <Border Grid.Column ="0" Grid.Row="0" BorderThickness="1" Background="White" BorderBrush="Black">
-                
+                <usercontrols:RecipeSlotControl RecipeName="{Binding SelectedItemRecipe.A1.Name}" Quantity="{Binding SelectedItemRecipe.A1.Quantity}"/>
             </Border>
             <Border Grid.Column ="1" Grid.Row="0" BorderThickness="1" Background="White" BorderBrush="Black">
-                <TextBlock Text="{Binding SelectedItemRecipe.A2.Name}" TextWrapping="Wrap"/>
+                <usercontrols:RecipeSlotControl RecipeName="{Binding SelectedItemRecipe.A2.Name}" Quantity="{Binding SelectedItemRecipe.A2.Quantity}"/>
             </Border>
             <Border Grid.Column ="2" Grid.Row="0" BorderThickness="1" Background="White" BorderBrush="Black">
-                <TextBlock Text="{Binding SelectedItemRecipe.A3.Name}" TextWrapping="Wrap"/>
+                <usercontrols:RecipeSlotControl RecipeName="{Binding SelectedItemRecipe.A3.Name}" Quantity="{Binding SelectedItemRecipe.A3.Quantity}"/>
             </Border>
             <Border Grid.Column ="0" Grid.Row="1" BorderThickness="1" Background="White" BorderBrush="Black">
-                <TextBlock Text="{Binding SelectedItemRecipe.B1.Name}" TextWrapping="Wrap"/>
+                <usercontrols:RecipeSlotControl RecipeName="{Binding SelectedItemRecipe.B1.Name}" Quantity="{Binding SelectedItemRecipe.B1.Quantity}"/>
             </Border>
             <Border Grid.Column ="1" Grid.Row="1" BorderThickness="1" Background="White" BorderBrush="Black">
-                <TextBlock Text="{Binding SelectedItemRecipe.B2.Name}" TextWrapping="Wrap"/>
+                <usercontrols:RecipeSlotControl RecipeName="{Binding SelectedItemRecipe.B2.Name}" Quantity="{Binding SelectedItemRecipe.B2.Quantity}"/>
             </Border>
             <Border Grid.Column ="2" Grid.Row="1" BorderThickness="1" Background="White" BorderBrush="Black">
-                <TextBlock Text="{Binding SelectedItemRecipe.B3.Name}" TextWrapping="Wrap"/>
+                <usercontrols:RecipeSlotControl RecipeName="{Binding SelectedItemRecipe.B3.Name}" Quantity="{Binding SelectedItemRecipe.B3.Quantity}"/>
             </Border>
             <Border Grid.Column ="0" Grid.Row="2" BorderThickness="1" Background="White" BorderBrush="Black">
-                <TextBlock Text="{Binding SelectedItemRecipe.C1.Name}" TextWrapping="Wrap"/>
+                <usercontrols:RecipeSlotControl RecipeName="{Binding SelectedItemRecipe.C1.Name}" Quantity="{Binding SelectedItemRecipe.C1.Quantity}"/>
             </Border>
             <Border Grid.Column ="1" Grid.Row="2" BorderThickness="1" Background="White" BorderBrush="Black">
-                <TextBlock Text="{Binding SelectedItemRecipe.C2.Name}" TextWrapping="Wrap"/>
+                <usercontrols:RecipeSlotControl RecipeName="{Binding SelectedItemRecipe.C2.Name}" Quantity="{Binding SelectedItemRecipe.C2.Quantity}"/>
             </Border>
             <Border Grid.Column ="2" Grid.Row="2" BorderThickness="1" Background="White" BorderBrush="Black">
-                <TextBlock Text="{Binding SelectedItemRecipe.C3.Name}" TextWrapping="Wrap"/>
+                <usercontrols:RecipeSlotControl RecipeName="{Binding SelectedItemRecipe.C3.Name}" Quantity="{Binding SelectedItemRecipe.C3.Quantity}"/>
             </Border>
 
         </Grid>

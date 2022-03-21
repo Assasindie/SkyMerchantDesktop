@@ -24,9 +24,30 @@ namespace SkyMerchantDesktop.UserControls
         {
             InitializeComponent();
         }
-        
-        public string ItemName { get; set; }
 
-        public int Quantity { get; set; }
+        public static readonly DependencyProperty RecipeNameProperty =
+            DependencyProperty.Register(
+                nameof(RecipeName),
+                typeof(string),
+                typeof(RecipeSlotControl));
+
+        public static readonly DependencyProperty QuantityNameProperty =
+            DependencyProperty.Register(
+                nameof(Quantity),
+                typeof(string),
+                typeof(RecipeSlotControl));
+
+        public string RecipeName
+        {
+            get { return (string)GetValue(RecipeNameProperty); }
+            set { SetValue(RecipeNameProperty, value); }
+        }
+
+
+        public string Quantity
+        {
+            get { return (string)GetValue(QuantityNameProperty); }
+            set { SetValue(QuantityNameProperty, value); }
+        }
     }
 }
