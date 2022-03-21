@@ -22,7 +22,7 @@ namespace SkyMerchantDesktop.ViewModels
         public CollectionViewSource RecipeCostView
         {
             get { return _recipeCostView; }
-            set { _recipeCostView = value; OnPropertyChanged();}
+            set { _recipeCostView = value; OnPropertyChanged(); }
         }
 
         private EnhancedObservableCollection<RecipeItem> _recipeCosts;
@@ -44,7 +44,30 @@ namespace SkyMerchantDesktop.ViewModels
         private IRecipeAPIService _recipeApiService;
         private IRecipeService _recipeService;
 
-        private async Task Initialise()  
+        private RecipeItem _selectedItem;
+        public RecipeItem SelectedItem
+        {
+            get => _selectedItem;
+            set
+            {
+                _selectedItem = value;
+                GetSelectedItemVisualRecipe(value);
+                OnPropertyChanged();
+            }
+        }
+
+        private VisualRecipe _selectedItemRecipe;
+        public VisualRecipe SelectedItemRecipe
+        {
+            get => _selectedItemRecipe;
+            set
+            {
+                _selectedItemRecipe = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private async Task Initialise()
         {
             _recipes = await _recipeApiService.GetLatestRecipes();
             //need to be created on the same thread. When updating doesnt matter about thread.
@@ -63,7 +86,7 @@ namespace SkyMerchantDesktop.ViewModels
             timer = new System.Timers.Timer(120000);
             timer.Elapsed += Timer_Elapsed;
             timer.Start();
-         }
+        }
 
         public BazaarPageViewModel(IAuctionAPIService auctionApiService, IBazaarAPIService bazaarApiService,
             IRecipeAPIService recipeApiService, IRecipeService recipeService)
@@ -74,7 +97,7 @@ namespace SkyMerchantDesktop.ViewModels
             this._recipeService = recipeService;
             Task.Run(async () => await Initialise());
         }
-       
+
         private async Task LoadLatestData()
         {
             //this will take some time to load lmoa
@@ -86,6 +109,13 @@ namespace SkyMerchantDesktop.ViewModels
         private async void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
             await LoadLatestData();
+        }
+
+        private void GetSelectedItemVisualRecipe(RecipeItem recipe)
+        {
+            if(recipe == null) { return; }
+
+            SelectedItemRecipe = RecipeUtils.TransformRecipeToVisualRecipe(recipe.recipe);
         }
 
     }

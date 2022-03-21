@@ -3,20 +3,68 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SkyMerchantDesktop" xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        xmlns:usercontrols="clr-namespace:SkyMerchantDesktop.UserControls"
         mc:Ignorable="d"
+        ResizeMode="NoResize"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
         <ListView
-            ItemsSource = "{Binding RecipeCostView.View}">
+            ItemsSource = "{Binding RecipeCostView.View}" SelectedItem="{Binding SelectedItem}">
             <ListView.View>
                 <GridView AllowsColumnReorder="true">
-                    <GridViewColumn DisplayMemberBinding = "{Binding Path=name}" Header = "Recipe Name"/>
-                    <GridViewColumn DisplayMemberBinding = "{Binding Path=bazaarCost, StringFormat={}{0:#,#.00}}" Header = "Crafting Cost"/>
-                    <GridViewColumn DisplayMemberBinding = "{Binding Path=lowestAuction, StringFormat={}{0:#,#.00}}" Header = "AH Cost"/>
-                    <GridViewColumn DisplayMemberBinding = "{Binding Path=difference, StringFormat={}{0:#,#.00}}" Header = "Difference"/>
+                    <GridViewColumn DisplayMemberBinding = "{Binding Path=name}" Header = "Recipe Name" Width="150"/>
+                    <GridViewColumn DisplayMemberBinding = "{Binding Path=bazaarCost, StringFormat={}{0:#,#.00}}" Header = "Crafting Cost" Width="100"/>
+                    <GridViewColumn DisplayMemberBinding = "{Binding Path=lowestAuction, StringFormat={}{0:#,#.00}}" Header = "AH Cost" Width="100"/>
+                    <GridViewColumn DisplayMemberBinding = "{Binding Path=difference, StringFormat={}{0:#,#.00}}" Header = "Difference" Width="100"/>
                 </GridView>
             </ListView.View>
         </ListView>
+        <Grid Grid.Column="1" Margin="5,5,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="75"/>
+                <ColumnDefinition Width="75"/>
+                <ColumnDefinition Width="75"/>
+                <ColumnDefinition Width="auto"/>
+
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="75"/>
+                <RowDefinition Height="75"/>
+                <RowDefinition Height="75"/>
+                <RowDefinition Height="auto"/>
+            </Grid.RowDefinitions>
+            <Border Grid.Column ="0" Grid.Row="0" BorderThickness="1" Background="White" BorderBrush="Black">
+                
+            </Border>
+            <Border Grid.Column ="1" Grid.Row="0" BorderThickness="1" Background="White" BorderBrush="Black">
+                <TextBlock Text="{Binding SelectedItemRecipe.A2.Name}" TextWrapping="Wrap"/>
+            </Border>
+            <Border Grid.Column ="2" Grid.Row="0" BorderThickness="1" Background="White" BorderBrush="Black">
+                <TextBlock Text="{Binding SelectedItemRecipe.A3.Name}" TextWrapping="Wrap"/>
+            </Border>
+            <Border Grid.Column ="0" Grid.Row="1" BorderThickness="1" Background="White" BorderBrush="Black">
+                <TextBlock Text="{Binding SelectedItemRecipe.B1.Name}" TextWrapping="Wrap"/>
+            </Border>
+            <Border Grid.Column ="1" Grid.Row="1" BorderThickness="1" Background="White" BorderBrush="Black">
+                <TextBlock Text="{Binding SelectedItemRecipe.B2.Name}" TextWrapping="Wrap"/>
+            </Border>
+            <Border Grid.Column ="2" Grid.Row="1" BorderThickness="1" Background="White" BorderBrush="Black">
+                <TextBlock Text="{Binding SelectedItemRecipe.B3.Name}" TextWrapping="Wrap"/>
+            </Border>
+            <Border Grid.Column ="0" Grid.Row="2" BorderThickness="1" Background="White" BorderBrush="Black">
+                <TextBlock Text="{Binding SelectedItemRecipe.C1.Name}" TextWrapping="Wrap"/>
+            </Border>
+            <Border Grid.Column ="1" Grid.Row="2" BorderThickness="1" Background="White" BorderBrush="Black">
+                <TextBlock Text="{Binding SelectedItemRecipe.C2.Name}" TextWrapping="Wrap"/>
+            </Border>
+            <Border Grid.Column ="2" Grid.Row="2" BorderThickness="1" Background="White" BorderBrush="Black">
+                <TextBlock Text="{Binding SelectedItemRecipe.C3.Name}" TextWrapping="Wrap"/>
+            </Border>
+
+        </Grid>
     </Grid>
 </Window>
