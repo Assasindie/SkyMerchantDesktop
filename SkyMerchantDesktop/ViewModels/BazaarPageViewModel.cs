@@ -9,6 +9,7 @@ using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Threading;
 using SkyMerchantDesktop.Models;
+using SkyMerchantDesktop.Models.Interfaces;
 using SkyMerchantDesktop.Models.Recipe;
 using SkyMerchantDesktop.Services;
 using SkyMerchantDesktop.Utils;
@@ -38,12 +39,14 @@ namespace SkyMerchantDesktop.ViewModels
         private List<Auction> _auctions;
         private List<RecipeItem> _recipes;
         private System.Timers.Timer timer;
-
-        public ICommand SortByDifferenceCommand;
+        private IAuctionAPIService _auctionApiService;
+        private IBazaarAPIService _bazaarApiService;
+        private IRecipeAPIService _recipeApiService;
+        private IRecipeService _recipeService;
 
         private async Task Initialise()  
         {
-            _recipes = await App.RecipeApiService.GetLatestRecipes();
+            _recipes = await _recipeApiService.GetLatestRecipes();
             //need to be created on the same thread. When updating doesnt matter about thread.
             await App.Current.Dispatcher.BeginInvoke(async () =>
            {
@@ -62,17 +65,22 @@ namespace SkyMerchantDesktop.ViewModels
             timer.Start();
          }
 
-        public BazaarPageViewModel()
+        public BazaarPageViewModel(IAuctionAPIService auctionApiService, IBazaarAPIService bazaarApiService,
+            IRecipeAPIService recipeApiService, IRecipeService recipeService)
         {
-            Task.Run(() => Initialise());
+            this._auctionApiService = auctionApiService;
+            this._bazaarApiService = bazaarApiService;
+            this._recipeApiService = recipeApiService;
+            this._recipeService = recipeService;
+            Task.Run(async () => await Initialise());
         }
        
         private async Task LoadLatestData()
         {
             //this will take some time to load lmoa
-            _bazaars = await App.BazaarApiService.GetAllBazaarItems();
-            _auctions = await App.AuctionApiService.GetAllBINAuctions();
-            RecipeCosts = new EnhancedObservableCollection<RecipeItem>(new RecipeService().GetRecipeListWithCosts(_recipes, _auctions, _bazaars));
+            _bazaars = await _bazaarApiService.GetAllBazaarItems();
+            _auctions = await _auctionApiService.GetAllBINAuctions();
+            RecipeCosts = new EnhancedObservableCollection<RecipeItem>(_recipeService.GetRecipeListWithCosts(_recipes, _auctions, _bazaars));
         }
 
         private async void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)

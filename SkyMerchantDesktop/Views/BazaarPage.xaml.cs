@@ -8,7 +8,6 @@ namespace SkyMerchantDesktop.Views
         public BazaarPage()
         {
             InitializeComponent();
-            DataContext = new BazaarPageViewModel();
         }
     }
 }
