@@ -10,18 +10,7 @@ namespace SkyMerchantDesktop.Models.Recipe
     public class VisualRecipe : BaseObservableModel
     {
         public RecipeSlotItem A1 { get; set; }
-
-        private RecipeSlotItem _A2;
-        public RecipeSlotItem A2
-        {
-            get => _A2;
-            set
-            {
-                _A2 = value;
-                OnPropertyChanged();
-            }
-        }
-
+        public RecipeSlotItem A2 { get; set; }
         public RecipeSlotItem A3 { get; set; }
         public RecipeSlotItem B1 { get; set; }
         public RecipeSlotItem B2 { get; set; }
@@ -29,5 +18,7 @@ namespace SkyMerchantDesktop.Models.Recipe
         public RecipeSlotItem C1 { get; set; }
         public RecipeSlotItem C2 { get; set; }
         public RecipeSlotItem C3 { get; set; }
+
+        public List<RecipeSlotItem> Items { get; set; }
     }
 }

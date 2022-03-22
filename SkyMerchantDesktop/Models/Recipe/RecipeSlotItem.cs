@@ -29,5 +29,7 @@ namespace SkyMerchantDesktop.Models.Recipe
                 OnPropertyChanged();
             }
         }
+
+        public decimal Cost;
     }
 }

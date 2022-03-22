@@ -113,9 +113,7 @@ namespace SkyMerchantDesktop.ViewModels
 
         private void GetSelectedItemVisualRecipe(RecipeItem recipe)
         {
-            if(recipe == null) { return; }
-
-            SelectedItemRecipe = RecipeUtils.TransformRecipeToVisualRecipe(recipe.recipe);
+            SelectedItemRecipe = RecipeUtils.TransformRecipeToVisualRecipe(recipe.recipe, _recipeService, _bazaars, _auctions);
         }
 
     }
