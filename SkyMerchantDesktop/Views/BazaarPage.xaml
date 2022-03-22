@@ -28,14 +28,15 @@
                 <ColumnDefinition Width="75"/>
                 <ColumnDefinition Width="75"/>
                 <ColumnDefinition Width="75"/>
-                <ColumnDefinition Width="auto"/>
+                <ColumnDefinition Width="*"/>
 
             </Grid.ColumnDefinitions>
             <Grid.RowDefinitions>
                 <RowDefinition Height="75"/>
                 <RowDefinition Height="75"/>
                 <RowDefinition Height="75"/>
-                <RowDefinition Height="auto"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
             </Grid.RowDefinitions>
             <Border Grid.Column ="0" Grid.Row="0" BorderThickness="1" Background="White" BorderBrush="Black">
                 <usercontrols:RecipeSlotControl RecipeName="{Binding SelectedItemRecipe.A1.Name}" Quantity="{Binding SelectedItemRecipe.A1.Quantity}"/>
@@ -64,7 +65,34 @@
             <Border Grid.Column ="2" Grid.Row="2" BorderThickness="1" Background="White" BorderBrush="Black">
                 <usercontrols:RecipeSlotControl RecipeName="{Binding SelectedItemRecipe.C3.Name}" Quantity="{Binding SelectedItemRecipe.C3.Quantity}"/>
             </Border>
-
+            <Grid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="3" Margin="0,5,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="75"/>
+                    <ColumnDefinition Width="50"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Name" Grid.Column="0" TextWrapping="Wrap"></TextBlock>
+                <TextBlock Text="Cost" Grid.Column="1" TextWrapping="Wrap"></TextBlock>
+                <TextBlock Text="Qty" Grid.Column="2" TextWrapping="Wrap"></TextBlock>
+            </Grid>
+            <ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="4" ItemsSource="{Binding SelectedItemRecipe.Items}" Margin="0,0,0,0">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="75"/>
+                                <ColumnDefinition Width="50"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Name}" Grid.Column="0" TextWrapping="Wrap"></TextBlock>
+                            <TextBlock Text="{Binding Cost, StringFormat={}{0:#,#}}" Grid.Column="1" TextWrapping="Wrap"></TextBlock>
+                            <TextBlock Text="{Binding Quantity}" Grid.Column="2" TextWrapping="Wrap"></TextBlock>
+                            <Line></Line>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListView>
         </Grid>
     </Grid>
 </Window>

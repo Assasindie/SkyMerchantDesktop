@@ -48,6 +48,10 @@ namespace SkyMerchantDesktop.Utils
             PropertyInfo[] recipeInfos = typeof(Recipe).GetProperties();
             PropertyInfo[] visualRecipeInfos = typeof(VisualRecipe).GetProperties();
             List<RecipeSlotItem> uniqueRecipeSlotItems = new();
+            //deep clone and find auctions, this will prevent
+            //exception being thrown when the GetCostForRecipeSlot removes a auction from the list for calculation
+            List<Auction> filteredAuctions = AuctionUtils.FindAuctionByRecipeNamesAndDeepClone(recipe.A1,
+            recipe.A2, recipe.A3, recipe.B1, recipe.B2, recipe.B3, recipe.C1, recipe.C2, recipe.C3, auctions);
             //reflection magic to turn Recipe into Visual Recipe and get the Quantity/Readble name
             //length - 1 as the final object the List<RecipeItem> doesnt exist in Recipe
             for (int i = 0; i < visualRecipeInfos.Length - 1; i++)
@@ -56,7 +60,7 @@ namespace SkyMerchantDesktop.Utils
                 if (string.IsNullOrEmpty(value)) continue;
                 Tuple<string, int> quantityName = GetQuantityNameFromRecipe(value);
                 string formattedName = FormatCapitalSnakeCase(quantityName.Item1);
-                decimal cost = service.GetCostForRecipeSlot(quantityName.Item1, quantityName.Item2, bazaar, auctions);
+                decimal cost = service.GetCostForRecipeSlot(quantityName.Item1, quantityName.Item2, bazaar, filteredAuctions);
                 RecipeSlotItem item = new()
                 {
                     Name = formattedName,

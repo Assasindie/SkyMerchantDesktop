@@ -40,7 +40,7 @@ namespace SkyMerchantDesktop
         private void RegisterServices(IServiceCollection services)
         {
             //depending on the current build config use different api service
-            #if DEBUG
+            #if RELEASE
             services.AddSingleton<IAuctionAPIService, AuctionApiTestService>();
             services.AddSingleton<IBazaarAPIService, BazaarAPITestService>();
             services.AddSingleton<IRecipeAPIService, RecipeAPITestService>();

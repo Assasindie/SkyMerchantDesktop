@@ -82,6 +82,10 @@ namespace SkyMerchantDesktop.ViewModels
                RecipeCostView.IsLiveSortingRequested = true;
                RecipeCostView.SortDescriptions.Add(new SortDescription("difference", ListSortDirection.Descending));
            });
+            SelectedItemRecipe = new VisualRecipe
+            {
+                Items = new()
+            };
             //start timer that will regularly fetch new data
             timer = new System.Timers.Timer(120000);
             timer.Elapsed += Timer_Elapsed;

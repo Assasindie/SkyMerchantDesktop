@@ -30,6 +30,15 @@ namespace SkyMerchantDesktop.Models.Recipe
             }
         }
 
-        public decimal Cost;
+        private decimal _cost;
+        public decimal Cost
+        {
+            get => _cost;
+            set
+            {
+                _cost = value;
+                OnPropertyChanged();
+            }
+        }
     }
 }
