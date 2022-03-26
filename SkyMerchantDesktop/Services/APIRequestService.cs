@@ -15,7 +15,6 @@ namespace SkyMerchantDesktop.Services
         public readonly HttpClient client;
         private static string baseSkyblockUrl = $"https://api.hypixel.net/skyblock/";
         private static string baseSkyMerchantUrl = $"https://skymerchantapi.herokuapp.com/api/";
-        private static string skyblockApiKey = "919ccdd2-9c60-49fb-b2ff-39b9a94ff52d"; //dont steal pls
         public APIRequestService()
         {
             client = new HttpClient();
@@ -57,7 +56,8 @@ namespace SkyMerchantDesktop.Services
 
         public async Task<T> MakeSkyblockRequest<T>(string route, string WebMethod, string data = "")
         {
-            client.DefaultRequestHeaders.Add("API-Key", skyblockApiKey);
+            if (string.IsNullOrEmpty(App.settings?.SkyblockAPIKey)) return default;
+            client.DefaultRequestHeaders.Add("API-Key", App.settings.SkyblockAPIKey);
             //set route
             route = baseSkyblockUrl + route;
             HttpResponseMessage response = await MakeRequest(route, WebMethod, data);

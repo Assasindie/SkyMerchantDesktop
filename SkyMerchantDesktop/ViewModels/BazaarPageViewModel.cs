@@ -11,6 +11,7 @@ using System.Windows.Threading;
 using SkyMerchantDesktop.Models;
 using SkyMerchantDesktop.Models.Interfaces;
 using SkyMerchantDesktop.Models.Recipe;
+using SkyMerchantDesktop.Models.Setting;
 using SkyMerchantDesktop.Services;
 using SkyMerchantDesktop.Utils;
 
