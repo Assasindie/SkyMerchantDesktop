@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using SkyMerchantDesktop.Models.Interfaces;
+using SkyMerchantDesktop.Models.Setting;
 using SkyMerchantDesktop.ViewModels;
 using SkyMerchantDesktop.Views;
 using SkyMerchantDesktopTests.Services;
@@ -20,20 +21,27 @@ namespace SkyMerchantDesktop
     public partial class App : Application
     {
         public static APIRequestService APIRequestService;
-        private IServiceProvider _serviceProvider;
+        public static IServiceProvider ServiceProvider;
+        public static Settings? settings;
 
         public App()
         {
             APIRequestService = new APIRequestService();
             IServiceCollection services = new ServiceCollection();
             RegisterServices(services);
-            _serviceProvider = services.BuildServiceProvider();
+            ServiceProvider = services.BuildServiceProvider();
+            settings = ServiceProvider.GetRequiredService<ISettingsService>().LoadSettings().Result;
+            //initialise an empty settings if the settings file does not exist
+            if(settings == null)
+            {
+                settings = new Settings();
+            }
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            BazaarPage page = _serviceProvider.GetRequiredService<BazaarPage>();
+            BazaarPage page = ServiceProvider.GetRequiredService<BazaarPage>();
             page.Show();
         }
 
@@ -51,11 +59,18 @@ namespace SkyMerchantDesktop
             #endif
 
             services.AddSingleton<IRecipeService, RecipeService>();
+            services.AddSingleton<ISettingsService, SettingsService>();
             
             services.AddSingleton<BazaarPageViewModel>();
             services.AddSingleton<BazaarPage>(s => new BazaarPage()
             {
                 DataContext = s.GetRequiredService<BazaarPageViewModel>()
+            });
+
+            services.AddTransient<SettingsWindowViewModel>();
+            services.AddTransient<SettingsWindow>(s => new SettingsWindow()
+            {
+                DataContext = s.GetRequiredService<SettingsWindowViewModel>()
             });
         }
     }

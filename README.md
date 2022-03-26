@@ -15,3 +15,11 @@ Historical Trends.
 
 ## Developing
 Only I am allowed to push to main.
+
+## Tests
+
+Need to create a file in the test output folder called settings.json of format 
+
+<code>{"UserName":"Assasindie","SkyblockAPIKey":"API KEY"}</code>
+
+need to get your own hypixel API key.

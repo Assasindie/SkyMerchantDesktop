@@ -32,7 +32,7 @@ namespace SkyMerchantDesktop.Utils
             List<string> names = new() {A1, A2, A3, B1, B2, B3, C1, C2, C3};
             List<Auction> existingAuctions = auctions.FindAll(o => names.Contains(o.itemName.ToLower()));
             //deep clone it so can remove from list without affecting main auction list
-            return JsonConvert.DeserializeObject<List<Auction>>(JsonConvert.SerializeObject(existingAuctions))!;
+            return CloneUtils.DeepClone(existingAuctions)!;
         }
 
         public static decimal GetLowestAuctionByName(string name, List<Auction> auctions)

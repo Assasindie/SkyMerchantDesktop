@@ -20,7 +20,8 @@ namespace SkyMerchantDesktop.Services
         public async Task<List<Bazaar>> GetAllBazaarItems()
         {
             //take response which is a bunch of objects with static names and turn into a list so can display and easily query.
-            BazaarResponse request = await App.APIRequestService.MakeSkyblockRequest<BazaarResponse>("bazaar", "GET");
+            BazaarResponse? request = await App.APIRequestService.MakeSkyblockRequest<BazaarResponse?>("bazaar", "GET");
+            if (request == null) return new List<Bazaar>();
             BazaarProductResponse response = request.products;
             PropertyInfo[] properties = typeof(BazaarProductResponse).GetProperties();
             List<Bazaar> bazaarItems = new();
