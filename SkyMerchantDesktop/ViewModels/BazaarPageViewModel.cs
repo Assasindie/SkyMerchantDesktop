@@ -22,7 +22,7 @@ namespace SkyMerchantDesktop.ViewModels
         public CollectionViewSource RecipeCostView
         {
             get { return _recipeCostView; }
-            set { _recipeCostView = value; OnPropertyChanged();}
+            set { _recipeCostView = value; OnPropertyChanged(); }
         }
 
         private EnhancedObservableCollection<RecipeItem> _recipeCosts;
@@ -44,7 +44,45 @@ namespace SkyMerchantDesktop.ViewModels
         private IRecipeAPIService _recipeApiService;
         private IRecipeService _recipeService;
 
-        private async Task Initialise()  
+        private RecipeItem _selectedItem;
+        public RecipeItem SelectedItem
+        {
+            get => _selectedItem;
+            set
+            {
+                _selectedItem = value;
+                GetSelectedItemVisualRecipe(value);
+                OnPropertyChanged();
+            }
+        }
+
+        private VisualRecipe _selectedItemRecipe;
+        public VisualRecipe SelectedItemRecipe
+        {
+            get => _selectedItemRecipe;
+            set
+            {
+                _selectedItemRecipe = value;
+                OnPropertyChanged();
+            }
+        }
+
+        private string _searchQuery;
+        public string SearchQuery
+        {
+            get => _searchQuery;
+            set
+            {
+                _searchQuery = value;
+                OnPropertyChanged();
+                //trigger the filter event when 
+                RecipeCostView.Filter += RecipeCostView_Filter;
+
+            }
+        }
+
+
+        private async Task Initialise()
         {
             _recipes = await _recipeApiService.GetLatestRecipes();
             //need to be created on the same thread. When updating doesnt matter about thread.
@@ -58,12 +96,37 @@ namespace SkyMerchantDesktop.ViewModels
 
                RecipeCostView.IsLiveSortingRequested = true;
                RecipeCostView.SortDescriptions.Add(new SortDescription("difference", ListSortDirection.Descending));
+               RecipeCostView.IsLiveFilteringRequested = true;
            });
+            SelectedItemRecipe = new VisualRecipe
+            {
+                Items = new()
+            };
             //start timer that will regularly fetch new data
             timer = new System.Timers.Timer(120000);
             timer.Elapsed += Timer_Elapsed;
             timer.Start();
-         }
+        }
+
+        private void RecipeCostView_Filter(object sender, FilterEventArgs e)
+        {
+            RecipeItem item = (RecipeItem)e.Item;
+            if (string.IsNullOrEmpty(SearchQuery))
+            {
+                e.Accepted = true;
+            }
+            else
+            {
+                if (item.name.ToLower().Contains(SearchQuery))
+                {
+                    e.Accepted = true;
+                }
+                else
+                {
+                    e.Accepted = false;
+                }
+            }
+        }
 
         public BazaarPageViewModel(IAuctionAPIService auctionApiService, IBazaarAPIService bazaarApiService,
             IRecipeAPIService recipeApiService, IRecipeService recipeService)
@@ -74,7 +137,7 @@ namespace SkyMerchantDesktop.ViewModels
             this._recipeService = recipeService;
             Task.Run(async () => await Initialise());
         }
-       
+
         private async Task LoadLatestData()
         {
             //this will take some time to load lmoa
@@ -86,6 +149,11 @@ namespace SkyMerchantDesktop.ViewModels
         private async void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
         {
             await LoadLatestData();
+        }
+
+        private void GetSelectedItemVisualRecipe(RecipeItem recipe)
+        {
+            SelectedItemRecipe = RecipeUtils.TransformRecipeToVisualRecipe(recipe.recipe, _recipeService, _bazaars, _auctions);
         }
 
     }

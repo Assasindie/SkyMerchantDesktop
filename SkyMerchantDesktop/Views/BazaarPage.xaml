@@ -3,20 +3,107 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
-        xmlns:local="clr-namespace:SkyMerchantDesktop" xmlns:componentModel="clr-namespace:System.ComponentModel;assembly=WindowsBase"
+        xmlns:usercontrols="clr-namespace:SkyMerchantDesktop.UserControls"
         mc:Ignorable="d"
+        ResizeMode="NoResize"
         Title="MainWindow" Height="450" Width="800">
     <Grid>
-        <ListView
-            ItemsSource = "{Binding RecipeCostView.View}">
-            <ListView.View>
-                <GridView AllowsColumnReorder="true">
-                    <GridViewColumn DisplayMemberBinding = "{Binding Path=name}" Header = "Recipe Name"/>
-                    <GridViewColumn DisplayMemberBinding = "{Binding Path=bazaarCost, StringFormat={}{0:#,#.00}}" Header = "Crafting Cost"/>
-                    <GridViewColumn DisplayMemberBinding = "{Binding Path=lowestAuction, StringFormat={}{0:#,#.00}}" Header = "AH Cost"/>
-                    <GridViewColumn DisplayMemberBinding = "{Binding Path=difference, StringFormat={}{0:#,#.00}}" Header = "Difference"/>
-                </GridView>
-            </ListView.View>
-        </ListView>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition Width="460"/>
+        </Grid.ColumnDefinitions>
+        <Grid Grid.Column="0" Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="20"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="400"/>
+                <ColumnDefinition Width="60"/>
+            </Grid.ColumnDefinitions>
+            <TextBox Grid.Row="0" Grid.ColumnSpan="2" Grid.Column="0" Text="{Binding SearchQuery, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+            <ListView 
+            ItemsSource = "{Binding RecipeCostView.View}" SelectedItem="{Binding SelectedItem}" Grid.Row="1" Grid.ColumnSpan="2">
+                <ListView.View>
+                    <GridView AllowsColumnReorder="true">
+                        <GridViewColumn DisplayMemberBinding = "{Binding Path=name}" Header = "Recipe Name" Width="150"/>
+                        <GridViewColumn DisplayMemberBinding = "{Binding Path=bazaarCost, StringFormat={}{0:#,#.00}}" Header = "Crafting Cost" Width="100"/>
+                        <GridViewColumn DisplayMemberBinding = "{Binding Path=lowestAuction, StringFormat={}{0:#,#.00}}" Header = "AH Cost" Width="100"/>
+                        <GridViewColumn DisplayMemberBinding = "{Binding Path=difference, StringFormat={}{0:#,#.00}}" Header = "Difference" Width="100"/>
+                    </GridView>
+                </ListView.View>
+            </ListView>
+        </Grid>
+        <Grid Grid.Column="1" Margin="5,5,0,0">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="75"/>
+                <ColumnDefinition Width="75"/>
+                <ColumnDefinition Width="75"/>
+                <ColumnDefinition Width="*"/>
+
+            </Grid.ColumnDefinitions>
+            <Grid.RowDefinitions>
+                <RowDefinition Height="75"/>
+                <RowDefinition Height="75"/>
+                <RowDefinition Height="75"/>
+                <RowDefinition Height="30"/>
+                <RowDefinition Height="*"/>
+            </Grid.RowDefinitions>
+            <Border Grid.Column ="0" Grid.Row="0" BorderThickness="1" Background="White" BorderBrush="Black">
+                <usercontrols:RecipeSlotControl RecipeName="{Binding SelectedItemRecipe.A1.Name}" Quantity="{Binding SelectedItemRecipe.A1.Quantity}"/>
+            </Border>
+            <Border Grid.Column ="1" Grid.Row="0" BorderThickness="1" Background="White" BorderBrush="Black">
+                <usercontrols:RecipeSlotControl RecipeName="{Binding SelectedItemRecipe.A2.Name}" Quantity="{Binding SelectedItemRecipe.A2.Quantity}"/>
+            </Border>
+            <Border Grid.Column ="2" Grid.Row="0" BorderThickness="1" Background="White" BorderBrush="Black">
+                <usercontrols:RecipeSlotControl RecipeName="{Binding SelectedItemRecipe.A3.Name}" Quantity="{Binding SelectedItemRecipe.A3.Quantity}"/>
+            </Border>
+            <Border Grid.Column ="0" Grid.Row="1" BorderThickness="1" Background="White" BorderBrush="Black">
+                <usercontrols:RecipeSlotControl RecipeName="{Binding SelectedItemRecipe.B1.Name}" Quantity="{Binding SelectedItemRecipe.B1.Quantity}"/>
+            </Border>
+            <Border Grid.Column ="1" Grid.Row="1" BorderThickness="1" Background="White" BorderBrush="Black">
+                <usercontrols:RecipeSlotControl RecipeName="{Binding SelectedItemRecipe.B2.Name}" Quantity="{Binding SelectedItemRecipe.B2.Quantity}"/>
+            </Border>
+            <Border Grid.Column ="2" Grid.Row="1" BorderThickness="1" Background="White" BorderBrush="Black">
+                <usercontrols:RecipeSlotControl RecipeName="{Binding SelectedItemRecipe.B3.Name}" Quantity="{Binding SelectedItemRecipe.B3.Quantity}"/>
+            </Border>
+            <Border Grid.Column ="0" Grid.Row="2" BorderThickness="1" Background="White" BorderBrush="Black">
+                <usercontrols:RecipeSlotControl RecipeName="{Binding SelectedItemRecipe.C1.Name}" Quantity="{Binding SelectedItemRecipe.C1.Quantity}"/>
+            </Border>
+            <Border Grid.Column ="1" Grid.Row="2" BorderThickness="1" Background="White" BorderBrush="Black">
+                <usercontrols:RecipeSlotControl RecipeName="{Binding SelectedItemRecipe.C2.Name}" Quantity="{Binding SelectedItemRecipe.C2.Quantity}"/>
+            </Border>
+            <Border Grid.Column ="2" Grid.Row="2" BorderThickness="1" Background="White" BorderBrush="Black">
+                <usercontrols:RecipeSlotControl RecipeName="{Binding SelectedItemRecipe.C3.Name}" Quantity="{Binding SelectedItemRecipe.C3.Quantity}"/>
+            </Border>
+            <Grid Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="3" Margin="0,5,0,0">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="100"/>
+                    <ColumnDefinition Width="75"/>
+                    <ColumnDefinition Width="50"/>
+                </Grid.ColumnDefinitions>
+                <TextBlock Text="Name" Grid.Column="0" TextWrapping="Wrap"></TextBlock>
+                <TextBlock Text="Cost" Grid.Column="1" TextWrapping="Wrap"></TextBlock>
+                <TextBlock Text="Qty" Grid.Column="2" TextWrapping="Wrap"></TextBlock>
+            </Grid>
+            <ListView ScrollViewer.HorizontalScrollBarVisibility="Disabled"
+                      Grid.Column="0" Grid.ColumnSpan="3" Grid.Row="4" ItemsSource="{Binding SelectedItemRecipe.Items}" Margin="0,0,0,0">
+                <ListBox.ItemTemplate>
+                    <DataTemplate>
+                        <Grid>
+                            <Grid.ColumnDefinitions>
+                                <ColumnDefinition Width="100"/>
+                                <ColumnDefinition Width="75"/>
+                                <ColumnDefinition Width="50"/>
+                            </Grid.ColumnDefinitions>
+                            <TextBlock Text="{Binding Name}" Grid.Column="0" TextWrapping="Wrap"></TextBlock>
+                            <TextBlock Text="{Binding Cost, StringFormat={}{0:#,#}}" Grid.Column="1" TextWrapping="Wrap"></TextBlock>
+                            <TextBlock Text="{Binding Quantity}" Grid.Column="2" TextWrapping="Wrap"></TextBlock>
+                            <Line></Line>
+                        </Grid>
+                    </DataTemplate>
+                </ListBox.ItemTemplate>
+            </ListView>
+        </Grid>
     </Grid>
 </Window>

@@ -23,15 +23,15 @@ namespace SkyMerchantDesktop.Services
             decimal totalCost = 0;
             try
             {
-                totalCost += CheckNotNUllAndGetCost(recipe.A1, bazzar, filteredAuctions);
-                totalCost += CheckNotNUllAndGetCost(recipe.A2, bazzar, filteredAuctions);
-                totalCost += CheckNotNUllAndGetCost(recipe.A3, bazzar, filteredAuctions);
-                totalCost += CheckNotNUllAndGetCost(recipe.B1, bazzar, filteredAuctions);
-                totalCost += CheckNotNUllAndGetCost(recipe.B2, bazzar, filteredAuctions);
-                totalCost += CheckNotNUllAndGetCost(recipe.B3, bazzar, filteredAuctions);
-                totalCost += CheckNotNUllAndGetCost(recipe.C1, bazzar, filteredAuctions);
-                totalCost += CheckNotNUllAndGetCost(recipe.C2, bazzar, filteredAuctions);
-                totalCost += CheckNotNUllAndGetCost(recipe.C3, bazzar, filteredAuctions);
+                totalCost += CheckNotNullAndGetCost(recipe.A1, bazzar, filteredAuctions);
+                totalCost += CheckNotNullAndGetCost(recipe.A2, bazzar, filteredAuctions);
+                totalCost += CheckNotNullAndGetCost(recipe.A3, bazzar, filteredAuctions);
+                totalCost += CheckNotNullAndGetCost(recipe.B1, bazzar, filteredAuctions);
+                totalCost += CheckNotNullAndGetCost(recipe.B2, bazzar, filteredAuctions);
+                totalCost += CheckNotNullAndGetCost(recipe.B3, bazzar, filteredAuctions);
+                totalCost += CheckNotNullAndGetCost(recipe.C1, bazzar, filteredAuctions);
+                totalCost += CheckNotNullAndGetCost(recipe.C2, bazzar, filteredAuctions);
+                totalCost += CheckNotNullAndGetCost(recipe.C3, bazzar, filteredAuctions);
                 return totalCost;
             }catch (RecipeNotEnoughItemsException e)
             {
@@ -42,7 +42,7 @@ namespace SkyMerchantDesktop.Services
             }
         }
 
-        private decimal CheckNotNUllAndGetCost(string name, List<Bazaar> bazaar, List<Auction> auctions)
+        public decimal CheckNotNullAndGetCost(string name, List<Bazaar> bazaar, List<Auction> auctions)
         {
             if (string.IsNullOrWhiteSpace(name)) return 0;
             Tuple<string,int> result = RecipeUtils.GetQuantityNameFromRecipe(name);
