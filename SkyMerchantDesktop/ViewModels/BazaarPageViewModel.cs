@@ -67,6 +67,21 @@ namespace SkyMerchantDesktop.ViewModels
             }
         }
 
+        private string _searchQuery;
+        public string SearchQuery
+        {
+            get => _searchQuery;
+            set
+            {
+                _searchQuery = value;
+                OnPropertyChanged();
+                //trigger the filter event when 
+                RecipeCostView.Filter += RecipeCostView_Filter;
+
+            }
+        }
+
+
         private async Task Initialise()
         {
             _recipes = await _recipeApiService.GetLatestRecipes();
@@ -81,6 +96,7 @@ namespace SkyMerchantDesktop.ViewModels
 
                RecipeCostView.IsLiveSortingRequested = true;
                RecipeCostView.SortDescriptions.Add(new SortDescription("difference", ListSortDirection.Descending));
+               RecipeCostView.IsLiveFilteringRequested = true;
            });
             SelectedItemRecipe = new VisualRecipe
             {
@@ -90,6 +106,26 @@ namespace SkyMerchantDesktop.ViewModels
             timer = new System.Timers.Timer(120000);
             timer.Elapsed += Timer_Elapsed;
             timer.Start();
+        }
+
+        private void RecipeCostView_Filter(object sender, FilterEventArgs e)
+        {
+            RecipeItem item = (RecipeItem)e.Item;
+            if (string.IsNullOrEmpty(SearchQuery))
+            {
+                e.Accepted = true;
+            }
+            else
+            {
+                if (item.name.ToLower().Contains(SearchQuery))
+                {
+                    e.Accepted = true;
+                }
+                else
+                {
+                    e.Accepted = false;
+                }
+            }
         }
 
         public BazaarPageViewModel(IAuctionAPIService auctionApiService, IBazaarAPIService bazaarApiService,
