@@ -1,4 +1,8 @@
-﻿using System.Threading.Tasks;
+﻿using System;
+using System.IO;
+using System.Threading.Tasks;
+using System.Windows;
+using Newtonsoft.Json;
 using SkyMerchantDesktop.Models.Interfaces;
 using SkyMerchantDesktop.Models.Setting;
 
@@ -6,14 +10,23 @@ namespace SkyMerchantDesktop.Services
 {
     public class SettingsService : ISettingsService
     {
-        public Task<Settings> LoadSettings()
+        private readonly string _settingsPath = Environment.CurrentDirectory + @"\settings.json";
+        public async Task<Settings?> LoadSettings()
         {
-            throw new System.NotImplementedException();
+            if (!File.Exists(_settingsPath)) return null;
+            string json = await File.ReadAllTextAsync(_settingsPath);
+            return JsonConvert.DeserializeObject<Settings>(json);
         }
 
-        public Task SaveSettings()
+        public async Task SaveSettings(Settings? settings)
         {
-            throw new System.NotImplementedException();
+            if (settings == null) return;
+            string json = JsonConvert.SerializeObject(settings);
+            await using (StreamWriter sw = File.CreateText(_settingsPath))
+            {
+                await sw.WriteAsync(json);
+            }
+            MessageBox.Show("Saved Settings!");
         }
     }
 }

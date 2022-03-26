@@ -22,7 +22,7 @@ namespace SkyMerchantDesktop
     {
         public static APIRequestService APIRequestService;
         private IServiceProvider _serviceProvider;
-        public static Settings settings;
+        public static Settings? settings;
 
         public App()
         {
@@ -30,6 +30,7 @@ namespace SkyMerchantDesktop
             IServiceCollection services = new ServiceCollection();
             RegisterServices(services);
             _serviceProvider = services.BuildServiceProvider();
+            settings = _serviceProvider.GetRequiredService<ISettingsService>().LoadSettings().Result;
         }
 
         protected override void OnStartup(StartupEventArgs e)

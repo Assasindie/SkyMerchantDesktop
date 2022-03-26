@@ -10,9 +10,9 @@ namespace SkyMerchantDesktop.ViewModels
 {
     public class SettingsWindowViewModel : BaseViewModel
     {
-        private Settings _settings;
+        private Settings? _settings;
 
-        public Settings Settings
+        public Settings? Settings
         {
             get => _settings;
             set
@@ -37,7 +37,7 @@ namespace SkyMerchantDesktop.ViewModels
 
         private async Task SaveSettings()
         {
-            await _settingsService.SaveSettings();
+            await _settingsService.SaveSettings(Settings!);
         }
     }
 }

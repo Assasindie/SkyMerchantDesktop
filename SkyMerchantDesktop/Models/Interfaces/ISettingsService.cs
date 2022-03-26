@@ -9,7 +9,7 @@ namespace SkyMerchantDesktop.Models.Interfaces
 {
     public interface ISettingsService
     {
-        public Task<Settings> LoadSettings();
-        public Task SaveSettings();
+        public Task<Settings?> LoadSettings();
+        public Task SaveSettings(Settings settings);
     }
 }
