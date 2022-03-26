@@ -8,6 +8,7 @@ using System.Threading.Tasks;
 using System.Windows;
 using Microsoft.Extensions.DependencyInjection;
 using SkyMerchantDesktop.Models.Interfaces;
+using SkyMerchantDesktop.Models.Setting;
 using SkyMerchantDesktop.ViewModels;
 using SkyMerchantDesktop.Views;
 using SkyMerchantDesktopTests.Services;
@@ -21,6 +22,7 @@ namespace SkyMerchantDesktop
     {
         public static APIRequestService APIRequestService;
         private IServiceProvider _serviceProvider;
+        public static Settings settings;
 
         public App()
         {
@@ -51,11 +53,18 @@ namespace SkyMerchantDesktop
             #endif
 
             services.AddSingleton<IRecipeService, RecipeService>();
+            services.AddSingleton<ISettingsService, SettingsService>();
             
             services.AddSingleton<BazaarPageViewModel>();
             services.AddSingleton<BazaarPage>(s => new BazaarPage()
             {
                 DataContext = s.GetRequiredService<BazaarPageViewModel>()
+            });
+
+            services.AddTransient<SettingsWindowViewModel>();
+            services.AddTransient<SettingsWindow>(s => new SettingsWindow()
+            {
+                DataContext = s.GetRequiredService<SettingsWindowViewModel>()
             });
         }
     }
