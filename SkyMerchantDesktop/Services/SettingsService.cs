@@ -26,7 +26,6 @@ namespace SkyMerchantDesktop.Services
             {
                 await sw.WriteAsync(json);
             }
-            MessageBox.Show("Saved Settings!");
         }
     }
 }

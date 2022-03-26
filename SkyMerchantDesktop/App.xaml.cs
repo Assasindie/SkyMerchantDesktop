@@ -21,7 +21,7 @@ namespace SkyMerchantDesktop
     public partial class App : Application
     {
         public static APIRequestService APIRequestService;
-        private IServiceProvider _serviceProvider;
+        public static IServiceProvider ServiceProvider;
         public static Settings? settings;
 
         public App()
@@ -29,21 +29,26 @@ namespace SkyMerchantDesktop
             APIRequestService = new APIRequestService();
             IServiceCollection services = new ServiceCollection();
             RegisterServices(services);
-            _serviceProvider = services.BuildServiceProvider();
-            settings = _serviceProvider.GetRequiredService<ISettingsService>().LoadSettings().Result;
+            ServiceProvider = services.BuildServiceProvider();
+            settings = ServiceProvider.GetRequiredService<ISettingsService>().LoadSettings().Result;
+            //initialise an empty settings if the settings file does not exist
+            if(settings == null)
+            {
+                settings = new Settings();
+            }
         }
 
         protected override void OnStartup(StartupEventArgs e)
         {
             base.OnStartup(e);
-            BazaarPage page = _serviceProvider.GetRequiredService<BazaarPage>();
+            BazaarPage page = ServiceProvider.GetRequiredService<BazaarPage>();
             page.Show();
         }
 
         private void RegisterServices(IServiceCollection services)
         {
             //depending on the current build config use different api service
-            #if DEBUG
+            #if RELEASE
             services.AddSingleton<IAuctionAPIService, AuctionApiTestService>();
             services.AddSingleton<IBazaarAPIService, BazaarAPITestService>();
             services.AddSingleton<IRecipeAPIService, RecipeAPITestService>();

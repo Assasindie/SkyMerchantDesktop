@@ -8,12 +8,15 @@ using System.Threading.Tasks;
 using System.Windows.Data;
 using System.Windows.Input;
 using System.Windows.Threading;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Toolkit.Mvvm.Input;
 using SkyMerchantDesktop.Models;
 using SkyMerchantDesktop.Models.Interfaces;
 using SkyMerchantDesktop.Models.Recipe;
 using SkyMerchantDesktop.Models.Setting;
 using SkyMerchantDesktop.Services;
 using SkyMerchantDesktop.Utils;
+using SkyMerchantDesktop.Views;
 
 namespace SkyMerchantDesktop.ViewModels
 {
@@ -82,23 +85,26 @@ namespace SkyMerchantDesktop.ViewModels
             }
         }
 
+        public ICommand SettingsWindowCommand { get; set; }
+
 
         private async Task Initialise()
         {
             _recipes = await _recipeApiService.GetLatestRecipes();
             //need to be created on the same thread. When updating doesnt matter about thread.
+            await LoadLatestData();
             await App.Current.Dispatcher.BeginInvoke(async () =>
-           {
-               await LoadLatestData();
-               RecipeCostView = new CollectionViewSource()
-               {
-                   Source = RecipeCosts
-               };
+            {
+                RecipeCostView = new CollectionViewSource()
+                {
+                    Source = RecipeCosts
+                };
 
-               RecipeCostView.IsLiveSortingRequested = true;
-               RecipeCostView.SortDescriptions.Add(new SortDescription("difference", ListSortDirection.Descending));
-               RecipeCostView.IsLiveFilteringRequested = true;
-           });
+                RecipeCostView.IsLiveSortingRequested = true;
+                RecipeCostView.SortDescriptions.Add(new SortDescription("difference", ListSortDirection.Descending));
+                RecipeCostView.IsLiveFilteringRequested = true;
+            });
+
             SelectedItemRecipe = new VisualRecipe
             {
                 Items = new()
@@ -118,14 +124,7 @@ namespace SkyMerchantDesktop.ViewModels
             }
             else
             {
-                if (item.name.ToLower().Contains(SearchQuery))
-                {
-                    e.Accepted = true;
-                }
-                else
-                {
-                    e.Accepted = false;
-                }
+                e.Accepted = item.name.ToLower().Contains(SearchQuery);
             }
         }
 
@@ -137,6 +136,7 @@ namespace SkyMerchantDesktop.ViewModels
             this._recipeApiService = recipeApiService;
             this._recipeService = recipeService;
             Task.Run(async () => await Initialise());
+            SettingsWindowCommand = new RelayCommand(async () => await LoadSettingsWindow());
         }
 
         private async Task LoadLatestData()
@@ -144,7 +144,17 @@ namespace SkyMerchantDesktop.ViewModels
             //this will take some time to load lmoa
             _bazaars = await _bazaarApiService.GetAllBazaarItems();
             _auctions = await _auctionApiService.GetAllBINAuctions();
-            RecipeCosts = new EnhancedObservableCollection<RecipeItem>(_recipeService.GetRecipeListWithCosts(_recipes, _auctions, _bazaars));
+            List<RecipeItem> items = _recipeService.GetRecipeListWithCosts(_recipes, _auctions, _bazaars);
+            await App.Current.Dispatcher.BeginInvoke(async () =>
+            {
+                if (RecipeCosts == null) RecipeCosts = new EnhancedObservableCollection<RecipeItem>();
+                RecipeCosts.ClearList();
+                foreach (RecipeItem item in items)
+                {
+                    RecipeCosts.Add(item);
+                }
+            });
+
         }
 
         private async void Timer_Elapsed(object? sender, System.Timers.ElapsedEventArgs e)
@@ -157,5 +167,15 @@ namespace SkyMerchantDesktop.ViewModels
             SelectedItemRecipe = RecipeUtils.TransformRecipeToVisualRecipe(recipe.recipe, _recipeService, _bazaars, _auctions);
         }
 
+        private async Task LoadSettingsWindow()
+        {
+
+            await App.Current.Dispatcher.BeginInvoke(async () =>
+            {
+                SettingsWindow window = App.ServiceProvider.GetRequiredService<SettingsWindow>();
+                window.Show();
+            });
+
+        }
     }
 }

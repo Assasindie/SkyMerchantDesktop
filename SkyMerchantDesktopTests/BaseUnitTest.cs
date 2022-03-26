@@ -15,6 +15,7 @@ namespace SkyMerchantDesktopTests
         protected virtual void OneTimeSetup()
         {
             App.APIRequestService = new APIRequestService();
+            App.settings = new SettingsService().LoadSettings().Result;
         }
     }
 }
