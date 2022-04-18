@@ -39,6 +39,19 @@ namespace SkyMerchantDesktop.ViewModels
                 OnPropertyChanged();
             }
         }
+
+        private EnhancedObservableCollection<Auction> _userAuctions;
+
+        public EnhancedObservableCollection<Auction> userAuctions
+        {
+            get => _userAuctions;
+            set
+            {
+                _userAuctions = value;
+                OnPropertyChanged();
+            }
+        }
+
         private List<Bazaar> _bazaars;
         private List<Auction> _auctions;
         private List<RecipeItem> _recipes;
@@ -47,6 +60,7 @@ namespace SkyMerchantDesktop.ViewModels
         private IBazaarAPIService _bazaarApiService;
         private IRecipeAPIService _recipeApiService;
         private IRecipeService _recipeService;
+        private IAuctionService _auctionService;
 
         private RecipeItem _selectedItem;
         public RecipeItem SelectedItem
@@ -129,12 +143,13 @@ namespace SkyMerchantDesktop.ViewModels
         }
 
         public BazaarPageViewModel(IAuctionAPIService auctionApiService, IBazaarAPIService bazaarApiService,
-            IRecipeAPIService recipeApiService, IRecipeService recipeService)
+            IRecipeAPIService recipeApiService, IRecipeService recipeService, IAuctionService auctionService)
         {
             this._auctionApiService = auctionApiService;
             this._bazaarApiService = bazaarApiService;
             this._recipeApiService = recipeApiService;
             this._recipeService = recipeService;
+            this._auctionService = auctionService;
             Task.Run(async () => await Initialise());
             SettingsWindowCommand = new RelayCommand(async () => await LoadSettingsWindow());
         }
@@ -152,6 +167,14 @@ namespace SkyMerchantDesktop.ViewModels
                 foreach (RecipeItem item in items)
                 {
                     RecipeCosts.Add(item);
+                }
+
+                List<Auction> auctions = new(_auctionService.FilterAuctionsByUser(App.settings.uuid, _auctions));
+                if (userAuctions == null) userAuctions = new EnhancedObservableCollection<Auction>();
+                userAuctions.ClearList();
+                foreach (Auction auction in auctions)
+                {
+                    userAuctions.Add(auction);
                 }
             });
 

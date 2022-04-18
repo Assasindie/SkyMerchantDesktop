@@ -7,7 +7,7 @@ Features that will likely be developed in order.
 
 <del> Recipe Viewer </del>,
 
-Users current auctions,
+<del> Users current auctions, </del> 
 
 Profit Tracker,
 

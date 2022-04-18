@@ -17,21 +17,24 @@ namespace SkyMerchantDesktopTests.Services
                     itemName = "Fast Soul Whip",
                     bin = true,
                     bid = 14999000,
-                    count = 1
+                    count = 1,
+                    auctioneer = "21"
                 },
                 new Auction()
                 {
                     itemName = "Withered Soul Whip",
                     bin = true,
                     bid = 12000000,
-                    count = 1
+                    count = 1,
+                    auctioneer =  "73",
                 },
                 new Auction()
                 {
                     itemName = "NonExistItem",
                     bin = true,
                     bid = 14999000,
-                    count = 1
+                    count = 1,
+                    auctioneer = "b0aty"
                 },
                 new Auction()
                 {
