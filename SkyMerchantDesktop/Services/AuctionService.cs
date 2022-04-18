@@ -7,9 +7,13 @@ namespace SkyMerchantDesktop.Services
 {
     public class AuctionService : IAuctionService
     {
-        public List<Auction> FilterAuctionsByUser(string uuid, List<Auction> auctions)
+        public List<Auction> FilterAuctionsByUser(string auctioneer, List<Auction> auctions)
         {
-            return auctions.FindAll(o => o.uuid == uuid);
+            if (string.IsNullOrEmpty(auctioneer))
+            {
+                return new List<Auction>();
+            }
+            return auctions.FindAll(o => o.auctioneer == auctioneer);
         }
     }
 }

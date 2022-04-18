@@ -52,15 +52,19 @@ namespace SkyMerchantDesktop
             services.AddSingleton<IAuctionAPIService, AuctionApiTestService>();
             services.AddSingleton<IBazaarAPIService, BazaarAPITestService>();
             services.AddSingleton<IRecipeAPIService, RecipeAPITestService>();
+            services.AddTransient<IMojangAPIService, MojangAPITestService>();
             #else
             services.AddSingleton<IAuctionAPIService, AuctionApiService>();
             services.AddSingleton<IBazaarAPIService, BazaarAPIService>();
             services.AddSingleton<IRecipeAPIService, RecipeAPIService>();
+            services.AddTransient<IMojangAPIService, MojangAPIService>();
             #endif
 
             services.AddSingleton<IRecipeService, RecipeService>();
             services.AddSingleton<ISettingsService, SettingsService>();
-            
+            services.AddTransient<IAuctionService, AuctionService>();
+
+
             services.AddSingleton<BazaarPageViewModel>();
             services.AddSingleton<BazaarPage>(s => new BazaarPage()
             {

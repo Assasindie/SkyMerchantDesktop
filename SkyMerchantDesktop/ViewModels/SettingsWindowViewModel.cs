@@ -27,15 +27,19 @@ namespace SkyMerchantDesktop.ViewModels
         }
 
         private ISettingsService _settingsService;
-
+        private IMojangAPIService _mojangApiService;
         public ICommand SaveCommand { get; set; }
+        public ICommand LoadUUIDCommand { get; set; }
 
-        public SettingsWindowViewModel(ISettingsService settingsService)
+        public SettingsWindowViewModel(ISettingsService settingsService, IMojangAPIService mojangApiService)
         {
             _settingsService = settingsService;
+            _mojangApiService = mojangApiService;
             //clone the settings, dont want updates to immediately be applied to app settings
             this.Settings = CloneUtils.DeepClone(App.settings);
             this.SaveCommand = new RelayCommand(async () => await SaveSettings());
+            this.LoadUUIDCommand =
+                new RelayCommand(async () => Settings.uuid =  await _mojangApiService.GetUUIDFromUsername(Settings.UserName));
         }
 
         private async Task SaveSettings()

@@ -14,7 +14,7 @@ namespace SkyMerchantDesktop.Models
         public bool bin { get; set; }
         public int count { get; set; }
 
-        public string uuid { get; set; }
+        public string auctioneer { get; set; }
         public int CompareTo(Auction? obj)
         {
             if (this.bid > obj.bid)

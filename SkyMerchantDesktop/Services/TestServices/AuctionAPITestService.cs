@@ -18,7 +18,7 @@ namespace SkyMerchantDesktopTests.Services
                     bin = true,
                     bid = 14999000,
                     count = 1,
-                    uuid = "21"
+                    auctioneer = "21"
                 },
                 new Auction()
                 {
@@ -26,7 +26,7 @@ namespace SkyMerchantDesktopTests.Services
                     bin = true,
                     bid = 12000000,
                     count = 1,
-                    uuid =  "73",
+                    auctioneer =  "73",
                 },
                 new Auction()
                 {
@@ -34,7 +34,7 @@ namespace SkyMerchantDesktopTests.Services
                     bin = true,
                     bid = 14999000,
                     count = 1,
-                    uuid = "b0aty"
+                    auctioneer = "b0aty"
                 },
                 new Auction()
                 {

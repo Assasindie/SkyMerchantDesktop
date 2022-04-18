@@ -33,11 +33,10 @@ namespace SkyMerchantDesktopTests.AuctionTests
         }
 
         [Test]
-        public void FilterAuctionsByUUID()
+        public void FilterAuctionsByUuid()
         {
             List<Auction> filteredAuctions = _auctionService.FilterAuctionsByUser(_uuid, _auctions);
             Assert.IsTrue(filteredAuctions.Count == 1);
         }
-        
     }
 }
